@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget - Basic Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        .api-simulator {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .api-simulator h3 {
+            margin-top: 0;
+        }
+        
+        .mock-response {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chat Widget - Basic Example</h1>
+        
+        <div class="description">
+            <p>This is a basic implementation of the embeddable chat widget. The widget appears as a floating button in the bottom-right corner of the page.</p>
+            <p><strong>Features demonstrated:</strong></p>
+            <ul>
+                <li>Default styling and positioning</li>
+                <li>Basic API integration with mock responses</li>
+                <li>Message persistence in localStorage</li>
+                <li>Responsive design</li>
+            </ul>
+        </div>
+        
+        <div class="api-simulator">
+            <h3>Mock API Responses</h3>
+            <p>Since this is a demo, we're using a mock API that returns predefined responses:</p>
+            <div class="mock-response">
+{
+  "message": "Hello! I'm a demo bot. How can I help you today?",
+  "timestamp": "2024-01-01T12:00:00Z",
+  "conversationId": "demo-conversation-123"
+}
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the chat widget -->
+    <script src="../dist/chat-widget.js"></script>
+    <script>
+        // Mock API endpoint for demonstration
+        const mockApiEndpoint = 'https://httpbin.org/post';
+        
+        // Mock API responses
+        const mockResponses = [
+            "Hello! I'm a demo bot. How can I help you today?",
+            "That's interesting! Can you tell me more?",
+            "I understand. Let me see how I can assist you.",
+            "Thanks for sharing that information with me.",
+            "Is there anything else I can help you with?"
+        ];
+        
+        let responseIndex = 0;
+        
+        // Override fetch to simulate API responses
+        const originalFetch = window.fetch;
+        window.fetch = async (url, options) => {
+            if (url === mockApiEndpoint) {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                const response = mockResponses[responseIndex % mockResponses.length];
+                responseIndex++;
+                
+                return Promise.resolve({
+                    ok: true,
+                    json: async () => ({
+                        message: response,
+                        timestamp: new Date().toISOString(),
+                        conversationId: 'demo-conversation-123'
+                    })
+                });
+            }
+            return originalFetch(url, options);
+        };
+        
+        // Initialize the chat widget
+        const widgetId = ChatWidget.init({
+            apiUrl: mockApiEndpoint,
+            position: 'bottom-right',
+            colors: {
+                buttonBackground: '#007bff',
+                buttonHover: '#0056b3'
+            },
+            locale: {
+                strings: {
+                    headerTitle: 'Demo Chat',
+                    placeholder: 'Ask me anything...'
+                }
+            },
+            behavior: {
+                persistState: true
+            }
+        });
+        
+        console.log('Chat widget initialized with ID:', widgetId);
+    </script>
+</body>
+</html>

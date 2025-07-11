@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget - iframe Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        .iframe-example {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .iframe-example h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .highlight {
+            color: #68d391;
+        }
+        
+        .string {
+            color: #fbb6ce;
+        }
+        
+        .comment {
+            color: #a0aec0;
+            font-style: italic;
+        }
+        
+        .demo-controls {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .demo-controls h3 {
+            margin-top: 0;
+        }
+        
+        .control-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .control-button:hover {
+            background: #0056b3;
+        }
+        
+        .control-button.danger {
+            background: #dc3545;
+        }
+        
+        .control-button.danger:hover {
+            background: #c82333;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chat Widget - iframe Integration</h1>
+        
+        <div class="description">
+            <p>This example demonstrates how to embed the chat widget using an iframe approach. This method provides complete isolation from the parent page's CSS and JavaScript.</p>
+            
+            <div class="info-box">
+                <strong>Benefits of iframe embedding:</strong>
+                <ul>
+                    <li>Complete CSS isolation - no style conflicts</li>
+                    <li>JavaScript sandboxing - safer for third-party sites</li>
+                    <li>Easy to implement - just a single HTML tag</li>
+                    <li>Consistent appearance across different websites</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="iframe-example">
+            <h3>Basic iframe Embedding</h3>
+            <p>Here's how you would embed the chat widget as an iframe:</p>
+            
+            <div class="code-block">
+<span class="comment">&lt;!-- Basic iframe embedding --&gt;</span>
+&lt;<span class="highlight">iframe</span> 
+    <span class="highlight">src</span>=<span class="string">"https://cdn.example.com/chat-widget.html?config=eyJ...encoded_config"</span>
+    <span class="highlight">style</span>=<span class="string">"position:fixed;bottom:20px;right:20px;width:60px;height:60px;border:none;z-index:9999"</span>
+    <span class="highlight">id</span>=<span class="string">"chat-widget-iframe"</span>&gt;
+&lt;/<span class="highlight">iframe</span>&gt;
+            </div>
+        </div>
+        
+        <div class="iframe-example">
+            <h3>Configuration Encoding</h3>
+            <p>The configuration is base64-encoded and passed as a URL parameter:</p>
+            
+            <div class="code-block">
+<span class="comment">// Configuration object</span>
+<span class="highlight">const</span> config = {
+    apiUrl: <span class="string">'https://api.example.com/chat'</span>,
+    position: <span class="string">'bottom-right'</span>,
+    colors: {
+        buttonBackground: <span class="string">'#007bff'</span>,
+        userMessageBg: <span class="string">'#007bff'</span>
+    }
+};
+
+<span class="comment">// Encode configuration</span>
+<span class="highlight">const</span> encodedConfig = btoa(JSON.stringify(config));
+<span class="highlight">const</span> iframeSrc = <span class="string">`https://cdn.example.com/chat-widget.html?config=${encodedConfig}`</span>;
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <strong>Note:</strong> This is a demonstration of how iframe embedding would work. In a real implementation, you would need to create a dedicated HTML page that loads the chat widget and handles the configuration from URL parameters.
+        </div>
+        
+        <div class="demo-controls">
+            <h3>iframe Demo Controls</h3>
+            <p>These controls demonstrate how you might interact with an iframe-embedded widget:</p>
+            
+            <button class="control-button" onclick="createIframe()">Create iframe Widget</button>
+            <button class="control-button" onclick="resizeIframe()">Toggle Size</button>
+            <button class="control-button" onclick="moveIframe()">Change Position</button>
+            <button class="control-button danger" onclick="removeIframe()">Remove iframe</button>
+        </div>
+        
+        <div class="iframe-example">
+            <h3>iframe Host Page Template</h3>
+            <p>Here's what the iframe host page (chat-widget.html) would look like:</p>
+            
+            <div class="code-block">
+<span class="comment">&lt;!-- chat-widget.html --&gt;</span>
+&lt;!DOCTYPE html&gt;
+&lt;<span class="highlight">html</span>&gt;
+&lt;<span class="highlight">head</span>&gt;
+    &lt;<span class="highlight">meta</span> <span class="highlight">charset</span>=<span class="string">"UTF-8"</span>&gt;
+    &lt;<span class="highlight">meta</span> <span class="highlight">name</span>=<span class="string">"viewport"</span> <span class="highlight">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;
+    &lt;<span class="highlight">title</span>&gt;Chat Widget&lt;/<span class="highlight">title</span>&gt;
+&lt;/<span class="highlight">head</span>&gt;
+&lt;<span class="highlight">body</span>&gt;
+    &lt;<span class="highlight">script</span> <span class="highlight">src</span>=<span class="string">"chat-widget.js"</span>&gt;&lt;/<span class="highlight">script</span>&gt;
+    &lt;<span class="highlight">script</span>&gt;
+        <span class="comment">// Parse configuration from URL</span>
+        <span class="highlight">const</span> urlParams = <span class="highlight">new</span> URLSearchParams(window.location.search);
+        <span class="highlight">const</span> configParam = urlParams.get(<span class="string">'config'</span>);
+        
+        <span class="highlight">if</span> (configParam) {
+            <span class="highlight">try</span> {
+                <span class="highlight">const</span> config = JSON.parse(atob(configParam));
+                ChatWidget.init(config);
+            } <span class="highlight">catch</span> (error) {
+                console.error(<span class="string">'Failed to parse config:'</span>, error);
+            }
+        }
+    &lt;/<span class="highlight">script</span>&gt;
+&lt;/<span class="highlight">body</span>&gt;
+&lt;/<span class="highlight">html</span>&gt;
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentIframe = null;
+        let isLargeSize = false;
+        let currentPosition = 'bottom-right';
+        
+        function createIframe() {
+            if (currentIframe) {
+                removeIframe();
+            }
+            
+            // Create a mock iframe using the actual widget
+            // In reality, this would be a separate HTML page
+            const config = {
+                apiUrl: 'https://api.example.com/chat',
+                position: 'bottom-right',
+                colors: {
+                    buttonBackground: '#28a745',
+                    buttonHover: '#218838',
+                    userMessageBg: '#28a745'
+                },
+                locale: {
+                    strings: {
+                        headerTitle: 'iframe Chat',
+                        placeholder: 'iframe message...'
+                    }
+                }
+            };
+            
+            // Since we can't create a real iframe demo without a server,
+            // we'll create a widget that simulates iframe behavior
+            currentIframe = document.createElement('div');
+            currentIframe.id = 'mock-iframe';
+            currentIframe.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                border: 2px solid #28a745;
+                border-radius: 8px;
+                z-index: 10000;
+                background: white;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            document.body.appendChild(currentIframe);
+            
+            // Load the widget inside our mock iframe
+            const script = document.createElement('script');
+            script.src = '../dist/chat-widget.js';
+            script.onload = () => {
+                // Override fetch for this iframe demo
+                const originalFetch = window.fetch;
+                window.fetch = async (url, options) => {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    return Promise.resolve({
+                        ok: true,
+                        json: async () => ({
+                            message: "I'm running in an iframe-like environment!",
+                            timestamp: new Date().toISOString(),
+                            conversationId: 'iframe-demo-123'
+                        })
+                    });
+                };
+                
+                setTimeout(() => {
+                    try {
+                        window.ChatWidget.init(config);
+                        console.log('Mock iframe widget created');
+                    } catch (error) {
+                        console.error('Failed to initialize iframe widget:', error);
+                    }
+                }, 100);
+            };
+            
+            currentIframe.appendChild(script);
+        }
+        
+        function resizeIframe() {
+            if (!currentIframe) {
+                alert('Please create an iframe first');
+                return;
+            }
+            
+            isLargeSize = !isLargeSize;
+            
+            if (isLargeSize) {
+                currentIframe.style.width = '350px';
+                currentIframe.style.height = '500px';
+            } else {
+                currentIframe.style.width = '60px';
+                currentIframe.style.height = '60px';
+            }
+        }
+        
+        function moveIframe() {
+            if (!currentIframe) {
+                alert('Please create an iframe first');
+                return;
+            }
+            
+            const positions = ['bottom-right', 'bottom-left', 'top-right', 'top-left'];
+            const currentIndex = positions.indexOf(currentPosition);
+            const nextIndex = (currentIndex + 1) % positions.length;
+            currentPosition = positions[nextIndex];
+            
+            const positionStyles = {
+                'bottom-right': { bottom: '20px', right: '20px', top: 'auto', left: 'auto' },
+                'bottom-left': { bottom: '20px', left: '20px', top: 'auto', right: 'auto' },
+                'top-right': { top: '20px', right: '20px', bottom: 'auto', left: 'auto' },
+                'top-left': { top: '20px', left: '20px', bottom: 'auto', right: 'auto' }
+            };
+            
+            Object.assign(currentIframe.style, positionStyles[currentPosition]);
+        }
+        
+        function removeIframe() {
+            if (currentIframe) {
+                // Destroy any widgets that might be running
+                try {
+                    if (window.ChatWidget) {
+                        window.ChatWidget.destroyAll();
+                    }
+                } catch (error) {
+                    console.error('Error destroying widgets:', error);
+                }
+                
+                currentIframe.remove();
+                currentIframe = null;
+                isLargeSize = false;
+                currentPosition = 'bottom-right';
+                console.log('Mock iframe removed');
+            }
+        }
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            removeIframe();
+        });
+    </script>
+</body>
+</html>

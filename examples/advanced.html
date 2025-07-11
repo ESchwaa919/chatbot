@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget - Advanced Example</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .feature-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .controls {
+            background: #e9ecef;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .controls h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .control-button:hover {
+            background: #0056b3;
+        }
+        
+        .control-button.danger {
+            background: #dc3545;
+        }
+        
+        .control-button.danger:hover {
+            background: #c82333;
+        }
+        
+        .control-button.success {
+            background: #28a745;
+        }
+        
+        .control-button.success:hover {
+            background: #218838;
+        }
+        
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .theme-button {
+            width: 40px;
+            height: 40px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        
+        .theme-button.active {
+            border-color: #333;
+        }
+        
+        .theme-blue { background: linear-gradient(135deg, #007bff, #0056b3); }
+        .theme-green { background: linear-gradient(135deg, #28a745, #1e7e34); }
+        .theme-purple { background: linear-gradient(135deg, #6f42c1, #563d7c); }
+        .theme-orange { background: linear-gradient(135deg, #fd7e14, #e55100); }
+        .theme-pink { background: linear-gradient(135deg, #e83e8c, #d1428a); }
+        .theme-dark { background: linear-gradient(135deg, #343a40, #212529); }
+        
+        .position-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            max-width: 200px;
+        }
+        
+        .position-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s;
+        }
+        
+        .position-button:hover {
+            background: #5a6268;
+        }
+        
+        .position-button.active {
+            background: #007bff;
+        }
+        
+        @media (max-width: 768px) {
+            .control-group {
+                flex-direction: column;
+            }
+            
+            .theme-selector {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Chat Widget</h1>
+        <p class="subtitle">Showcasing full customization capabilities</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🎨 Visual Customization</h3>
+                <p>Complete theme customization with colors, typography, and dimensions. Try different themes using the controls below.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>📱 Responsive Design</h3>
+                <p>Automatically adapts to mobile screens with fullscreen mode. Resize your browser to see it in action.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🔄 Real-time Updates</h3>
+                <p>Configuration can be updated dynamically without reinitializing the widget. All changes apply instantly.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>💾 State Persistence</h3>
+                <p>Conversation history and widget state are preserved across page reloads using localStorage.</p>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <h3>Widget Controls</h3>
+            
+            <div class="control-group">
+                <label><strong>Theme:</strong></label>
+                <div class="theme-selector">
+                    <div class="theme-button theme-blue active" data-theme="blue" title="Blue"></div>
+                    <div class="theme-button theme-green" data-theme="green" title="Green"></div>
+                    <div class="theme-button theme-purple" data-theme="purple" title="Purple"></div>
+                    <div class="theme-button theme-orange" data-theme="orange" title="Orange"></div>
+                    <div class="theme-button theme-pink" data-theme="pink" title="Pink"></div>
+                    <div class="theme-button theme-dark" data-theme="dark" title="Dark"></div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label><strong>Position:</strong></label>
+                <div class="position-selector">
+                    <button class="position-button" data-position="top-left">Top Left</button>
+                    <button class="position-button active" data-position="top-right">Top Right</button>
+                    <button class="position-button" data-position="bottom-left">Bottom Left</button>
+                    <button class="position-button" data-position="bottom-right">Bottom Right</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label><strong>Actions:</strong></label>
+                <button class="control-button" onclick="toggleWidget()">Toggle Widget</button>
+                <button class="control-button success" onclick="simulateIncomingMessage()">Simulate Message</button>
+                <button class="control-button danger" onclick="clearHistory()">Clear History</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../dist/chat-widget.js"></script>
+    <script>
+        let widgetId;
+        let currentTheme = 'blue';
+        let currentPosition = 'bottom-right';
+        let messageCount = 0;
+        
+        const themes = {
+            blue: {
+                buttonBackground: '#007bff',
+                buttonHover: '#0056b3',
+                userMessageBg: '#007bff',
+                botMessageBg: '#f1f3f4',
+                headerBg: '#f8f9fa'
+            },
+            green: {
+                buttonBackground: '#28a745',
+                buttonHover: '#218838',
+                userMessageBg: '#28a745',
+                botMessageBg: '#d4edda',
+                headerBg: '#d4edda'
+            },
+            purple: {
+                buttonBackground: '#6f42c1',
+                buttonHover: '#563d7c',
+                userMessageBg: '#6f42c1',
+                botMessageBg: '#e2d9f3',
+                headerBg: '#e2d9f3'
+            },
+            orange: {
+                buttonBackground: '#fd7e14',
+                buttonHover: '#e55100',
+                userMessageBg: '#fd7e14',
+                botMessageBg: '#ffe8cc',
+                headerBg: '#ffe8cc'
+            },
+            pink: {
+                buttonBackground: '#e83e8c',
+                buttonHover: '#d1428a',
+                userMessageBg: '#e83e8c',
+                botMessageBg: '#f8d7da',
+                headerBg: '#f8d7da'
+            },
+            dark: {
+                buttonBackground: '#343a40',
+                buttonHover: '#212529',
+                userMessageBg: '#495057',
+                botMessageBg: '#e9ecef',
+                headerBg: '#f8f9fa',
+                background: '#ffffff',
+                font: '#333333'
+            }
+        };
+        
+        const mockResponses = [
+            "Hello! I'm your advanced chat assistant. How can I help you today?",
+            "I noticed you're exploring the advanced features. Pretty cool, right?",
+            "You can customize everything about my appearance and behavior!",
+            "Try switching themes or changing my position on the screen.",
+            "I'll remember our conversation even if you refresh the page.",
+            "Is there anything specific you'd like to know about the chat widget?",
+            "The widget is fully responsive and works great on mobile devices too!",
+            "You can integrate me with any API or backend service.",
+            "Thanks for checking out the advanced demo!"
+        ];
+        
+        // Mock API simulation
+        window.fetch = async (url, options) => {
+            await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
+            
+            const response = mockResponses[messageCount % mockResponses.length];
+            messageCount++;
+            
+            return Promise.resolve({
+                ok: true,
+                json: async () => ({
+                    message: response,
+                    timestamp: new Date().toISOString(),
+                    conversationId: 'advanced-demo-123'
+                })
+            });
+        };
+        
+        // Initialize widget
+        function initializeWidget() {
+            widgetId = ChatWidget.init({
+                apiUrl: 'https://api.example.com/chat',
+                position: currentPosition,
+                colors: {
+                    background: '#ffffff',
+                    font: '#333333',
+                    messageBorder: '#e0e0e0',
+                    chatBorder: '#dee2e6',
+                    inputBg: '#ffffff',
+                    ...themes[currentTheme]
+                },
+                typography: {
+                    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+                    fontSize: '14px',
+                    lineHeight: '1.5'
+                },
+                dimensions: {
+                    width: '380px',
+                    height: '520px',
+                    buttonSize: '64px',
+                    borderRadius: {
+                        window: '12px',
+                        messages: '18px',
+                        button: '50%'
+                    }
+                },
+                features: {
+                    showTimestamps: true,
+                    showTypingIndicator: true
+                },
+                behavior: {
+                    persistState: true,
+                    mobileBreakpoint: 768
+                },
+                locale: {
+                    strings: {
+                        headerTitle: 'Advanced Chat',
+                        placeholder: 'Type your message here...',
+                        errorMessage: 'Oops! Something went wrong. Please try again.'
+                    }
+                }
+            });
+        }
+        
+        // Theme switching
+        document.querySelectorAll('.theme-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const theme = button.dataset.theme;
+                
+                document.querySelectorAll('.theme-button').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                
+                currentTheme = theme;
+                updateWidgetTheme();
+            });
+        });
+        
+        // Position switching
+        document.querySelectorAll('.position-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const position = button.dataset.position;
+                
+                document.querySelectorAll('.position-button').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                
+                currentPosition = position;
+                updateWidgetPosition();
+            });
+        });
+        
+        function updateWidgetTheme() {
+            ChatWidget.updateConfig(widgetId, {
+                colors: {
+                    background: '#ffffff',
+                    font: '#333333',
+                    messageBorder: '#e0e0e0',
+                    chatBorder: '#dee2e6',
+                    inputBg: '#ffffff',
+                    ...themes[currentTheme]
+                }
+            });
+        }
+        
+        function updateWidgetPosition() {
+            ChatWidget.updateConfig(widgetId, {
+                position: currentPosition
+            });
+        }
+        
+        function toggleWidget() {
+            const widget = ChatWidget.getInstance(widgetId);
+            if (widget) {
+                widget.toggle();
+            }
+        }
+        
+        function simulateIncomingMessage() {
+            const widget = ChatWidget.getInstance(widgetId);
+            if (widget) {
+                const randomMessage = mockResponses[Math.floor(Math.random() * mockResponses.length)];
+                widget.addMessage(randomMessage, 'bot');
+            }
+        }
+        
+        function clearHistory() {
+            const widget = ChatWidget.getInstance(widgetId);
+            if (widget) {
+                widget.storage.clear();
+                widget.elements.messages.innerHTML = '';
+                widget.messages = [];
+                console.log('Chat history cleared');
+            }
+        }
+        
+        // Initialize the widget when the page loads
+        document.addEventListener('DOMContentLoaded', initializeWidget);
+    </script>
+</body>
+</html>
