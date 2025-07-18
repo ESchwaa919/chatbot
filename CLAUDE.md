@@ -109,7 +109,7 @@ const config = {
   position: 'bottom-right',
   api: { websocket: true },
   colors: {
-    buttonBackground: '#FFF051',
+    buttonBackground: '#6B8E5A',
     headerBg: '#2E3C22',
     // ... CHE brand colors
   }
@@ -175,3 +175,19 @@ The chat widget can be embedded in any website:
   });
 </script>
 ```
+
+## Render.com Deployment
+
+### Automatic Deployment
+This project includes `render.yaml` for automatic deployment to Render.com:
+- Builds with `./install.sh`
+- Starts with `npm start`
+- Requires `OPENAI_API_KEY` environment variable
+
+### Thinkrific Integration
+Single-line script for Thinkrific site footer:
+```javascript
+(function(){var t=document.querySelector('title'),e=t?t.textContent:'',i=e?btoa(e.split(' ')[0]).replace(/[^a-zA-Z0-9]/g,'').substring(0,8):'87',n=document.createElement('script');n.src='https://YOUR_RENDER_DOMAIN.onrender.com/widget/dist/chat-widget.js',n.defer=!0,n.onload=function(){window.ChatWidget&&window.ChatWidget.init({apiUrl:'https://YOUR_RENDER_DOMAIN.onrender.com',videoId:i,position:'bottom-right',colors:{buttonBackground:'#6B8E5A',buttonHover:'#5A7B4A',userMessageBg:'#6B8E5A',headerBg:'#6B8E5A',chatBorder:'#6B8E5A'},behavior:{autoOpen:!1,persistState:!0}})},document.head.appendChild(n)})();
+```
+
+Replace `YOUR_RENDER_DOMAIN` with your actual domain.

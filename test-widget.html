@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Chat Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>🚀 Chat Widget Test</h1>
+        <p>This loads the widget directly from source files (no build required).</p>
+        <p>Look for the chat button in the bottom-right corner!</p>
+        <p><strong>Try:</strong> Click the button, type a message, see the mock responses.</p>
+    </div>
+
+    <!-- Load widget as ES modules -->
+    <script type="module">
+        // Import the widget
+        import('./src/index.js').then(module => {
+            const ChatWidget = module.default;
+            
+            // Mock API responses
+            const mockResponses = [
+                "Hello! I'm a test bot. How can I help you?",
+                "That's interesting! Tell me more.",
+                "I'm just a demo, but I'm working great!",
+                "You can customize my appearance completely.",
+                "Thanks for testing the chat widget!"
+            ];
+            
+            let responseIndex = 0;
+            
+            // Override fetch for demo
+            const originalFetch = window.fetch;
+            window.fetch = async (url, options) => {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
+                
+                const response = mockResponses[responseIndex % mockResponses.length];
+                responseIndex++;
+                
+                return Promise.resolve({
+                    ok: true,
+                    json: async () => ({
+                        message: response,
+                        timestamp: new Date().toISOString(),
+                        conversationId: 'test-conversation-123'
+                    })
+                });
+            };
+            
+            // Initialize the widget
+            try {
+                const widgetId = ChatWidget.init({
+                    apiUrl: 'https://test-api.example.com/chat',
+                    position: 'bottom-right',
+                    colors: {
+                        buttonBackground: '#28a745',
+                        buttonHover: '#218838',
+                        userMessageBg: '#28a745'
+                    },
+                    locale: {
+                        strings: {
+                            headerTitle: 'Test Chat',
+                            placeholder: 'Type your test message...'
+                        }
+                    },
+                    behavior: {
+                        persistState: true
+                    },
+                    features: {
+                        showTimestamps: true,
+                        showTypingIndicator: true
+                    }
+                });
+                
+                console.log('✅ Chat widget initialized successfully with ID:', widgetId);
+                
+                // Add some test controls
+                setTimeout(() => {
+                    const controls = document.createElement('div');
+                    controls.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: white;
+                        padding: 15px;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                        z-index: 10000;
+                    `;
+                    controls.innerHTML = `
+                        <h4 style="margin: 0 0 10px 0;">Widget Controls</h4>
+                        <button onclick="ChatWidget.getInstance('${widgetId}').toggle()" style="margin: 2px; padding: 5px 10px;">Toggle</button>
+                        <button onclick="ChatWidget.getInstance('${widgetId}').addMessage('System test message', 'bot')" style="margin: 2px; padding: 5px 10px;">Add Message</button>
+                    `;
+                    document.body.appendChild(controls);
+                }, 1000);
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize chat widget:', error);
+                alert('Failed to initialize chat widget. Check console for details.');
+            }
+        }).catch(error => {
+            console.error('❌ Failed to load chat widget:', error);
+            alert('Failed to load chat widget. Make sure you have a modern browser that supports ES modules.');
+        });
+    </script>
+</body>
+</html>

@@ -37,5 +37,13 @@
     "nodejs"
   ],
   "author": "CHE",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ESchwaa919/chatbot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ESchwaa919/chatbot/issues"
+  },
+  "homepage": "https://github.com/ESchwaa919/chatbot#readme"
 }
