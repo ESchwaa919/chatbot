@@ -1,0 +1,51 @@
+<summary>
+In this lecture, Marcus Fernandez discusses the process of repertorization in homeopathy. He explains how to use a repertory, which is a book that lists symptoms and the remedies associated with them. The students are given a case of a 7-year-old boy with nosebleeds and are asked to find rubrics (symptoms) in the repertory that match the case. They then score the remedies listed under each rubric and total the scores to determine the most likely remedy for the case. Fernandez emphasizes the importance of being as specific as possible when selecting rubrics and reminds the students that learning to use the repertory takes time and practice.
+</summary>
+
+<topics>
+1. Using a repertory: Fernandez explains how to navigate a repertory and find rubrics that match the symptoms in a case. He notes the importance of becoming familiar with the repertory through frequent use.
+
+2. Repertorization process: The students are guided through the process of repertorization, which involves selecting rubrics, scoring remedies, and totaling the scores to determine the most likely remedy for a case.
+
+3. Scoring remedies: Fernandez explains the scoring system used in the repertory, where remedies are listed in different typefaces (bold italics, bold capitals, etc.) that correspond to different point values.
+</topics>
+
+<takeaway>
+The most surprising takeaway from this lecture is the level of detail and specificity required when selecting rubrics from the repertory. Fernandez emphasizes the importance of matching the language used in the case as closely as possible to the language used in the repertory.
+</takeaway>
+
+<tone>
+The tone of this lecture is instructional and encouraging. Fernandez guides the students through the repertorization process step-by-step and reassures them that learning to use the repertory takes time and practice.
+</tone>
+
+<keywords>
+remedy, rubric, repertory, case, symptoms, points, bold italics, bold capitals, scoring, specificity, practice
+</keywords>
+
+<insights>
+1. The repertory is a crucial tool in homeopathic practice, and becoming familiar with it requires frequent use and practice.
+2. Selecting rubrics that are as specific as possible to the case is essential for accurate repertorization.
+3. The scoring system in the repertory helps to prioritize remedies based on their prominence in provings and clinical experience.
+</insights>
+
+<challenges>
+1. Finding rubrics that accurately match the language used in the case can be challenging, as the repertory may not always use the exact same words.
+2. Learning the abbreviations used for remedies in the repertory takes time and practice.
+3. Repertorization can be a time-consuming process, especially for beginners who are not yet familiar with the repertory.
+</challenges>
+
+<recommendations>
+1. Use the repertory frequently to become familiar with its organization and content.
+2. Be as specific as possible when selecting rubrics to match the case.
+3. Practice repertorization regularly to develop skill and speed in using the repertory.
+</recommendations>
+
+<unanswered>
+1. How do homeopaths determine the hierarchy of symptoms in a case?
+2. What role does the Materia Medica play in the final selection of a remedy?
+3. How do homeopaths handle cases where multiple remedies score similarly in the repertorization?
+</unanswered>
+
+<references>
+No specific references were mentioned in this lecture.
+</references>

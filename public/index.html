@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHE Chat Application</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2E3C22;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: block;
+            margin: 0 auto 30px;
+            max-width: 200px;
+        }
+        
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .video-selection {
+            margin-bottom: 30px;
+        }
+        
+        .video-selection label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2E3C22;
+        }
+        
+        .video-selection select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 16px;
+            background: white;
+        }
+        
+        .video-selection select:focus {
+            outline: none;
+            border-color: #6B8E5A;
+        }
+        
+        .demo-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .demo-section h2 {
+            color: #2E3C22;
+            margin-bottom: 20px;
+        }
+        
+        .demo-section p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: #6B8E5A;
+            color: #FFFFFF;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: #5A7B4A;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="/assets/che-logo.png" alt="CHE Logo" class="logo">
+        
+        <h1>Centre for Homeopathic Education</h1>
+        <h2 style="text-align: center; color: #666; font-weight: normal;">Interactive Video Chat System</h2>
+        
+        <div class="description">
+            <p>Welcome to the CHE interactive chat system. Select a video below to start chatting with our AI assistant about the lecture content.</p>
+            <p>The chat widget will appear in the bottom-right corner of your screen. You can ask questions about the video content, and our AI will provide answers based on the lecture summary.</p>
+        </div>
+        
+        <div class="video-selection">
+            <label for="videoSelect">Select a Video Lecture:</label>
+            <select id="videoSelect">
+                <option value="">Loading videos...</option>
+            </select>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Chat Widget Demo</h2>
+            <p>Use the buttons below to interact with the chat widget:</p>
+            
+            <button class="btn" id="initWidgetBtn">Initialize Widget</button>
+            <button class="btn" id="openWidgetBtn" disabled>Open Widget</button>
+            <button class="btn" id="closeWidgetBtn" disabled>Close Widget</button>
+            <button class="btn" id="destroyWidgetBtn" disabled>Destroy Widget</button>
+            
+            <div id="status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 Centre for Homeopathic Education. All rights reserved.</p>
+            <p>Powered by OpenAI and Socket.IO</p>
+        </div>
+    </div>
+
+    <!-- Chat Widget Script -->
+    <script src="/widget/dist/chat-widget.js?v=8" defer></script>
+    
+    <script>
+        let currentWidgetId = null;
+        let currentVideoId = null;
+        
+        // DOM elements
+        const videoSelect = document.getElementById('videoSelect');
+        const initWidgetBtn = document.getElementById('initWidgetBtn');
+        const openWidgetBtn = document.getElementById('openWidgetBtn');
+        const closeWidgetBtn = document.getElementById('closeWidgetBtn');
+        const destroyWidgetBtn = document.getElementById('destroyWidgetBtn');
+        const status = document.getElementById('status');
+        
+        // Load videos on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadVideos();
+        });
+        
+        // Load available videos
+        async function loadVideos() {
+            try {
+                const response = await fetch('/api/video');
+                const data = await response.json();
+                
+                if (data.videos && data.videos.length > 0) {
+                    videoSelect.innerHTML = '<option value="">Select a video...</option>';
+                    data.videos.forEach(video => {
+                        const option = document.createElement('option');
+                        option.value = video.id;
+                        option.textContent = video.name;
+                        videoSelect.appendChild(option);
+                    });
+                } else {
+                    videoSelect.innerHTML = '<option value="">No videos available</option>';
+                }
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                videoSelect.innerHTML = '<option value="">Error loading videos</option>';
+            }
+        }
+        
+        // Video selection change
+        videoSelect.addEventListener('change', function() {
+            currentVideoId = this.value;
+            if (currentVideoId && currentWidgetId) {
+                // Recreate widget with new video
+                ChatWidget.destroy(currentWidgetId);
+                resetButtons();
+                initWidget();
+            }
+        });
+        
+        // Initialize widget
+        initWidgetBtn.addEventListener('click', function() {
+            if (!currentVideoId) {
+                showStatus('Please select a video first.', 'error');
+                return;
+            }
+            
+            waitForChatWidget(() => {
+                initWidget();
+            });
+        });
+        
+        function initWidget() {
+            // Check if ChatWidget is available
+            if (typeof window.ChatWidget === 'undefined' || typeof window.ChatWidget.init !== 'function') {
+                showStatus('ChatWidget library not loaded. Please refresh the page.', 'error');
+                return;
+            }
+            
+            try {
+                const config = {
+                    apiUrl: window.location.origin,
+                    videoId: currentVideoId,
+                    position: 'bottom-right',
+                    api: {
+                        websocket: false, // Start with HTTP to avoid Socket.IO issues
+                        method: 'POST',
+                        timeout: 30000
+                    },
+                    behavior: {
+                        autoOpen: false,
+                        persistState: true
+                    }
+                };
+                
+                currentWidgetId = window.ChatWidget.init(config);
+                
+                initWidgetBtn.disabled = true;
+                openWidgetBtn.disabled = false;
+                closeWidgetBtn.disabled = false;
+                destroyWidgetBtn.disabled = false;
+                
+                showStatus('Widget initialized successfully!', 'success');
+            } catch (error) {
+                console.error('Error initializing widget:', error);
+                showStatus('Error initializing widget: ' + error.message, 'error');
+            }
+        }
+        
+        // Open widget
+        openWidgetBtn.addEventListener('click', function() {
+            const widget = window.ChatWidget.getInstance(currentWidgetId);
+            if (widget) {
+                widget.open();
+                showStatus('Widget opened.', 'info');
+            }
+        });
+        
+        // Close widget
+        closeWidgetBtn.addEventListener('click', function() {
+            const widget = window.ChatWidget.getInstance(currentWidgetId);
+            if (widget) {
+                widget.close();
+                showStatus('Widget closed.', 'info');
+            }
+        });
+        
+        // Destroy widget
+        destroyWidgetBtn.addEventListener('click', function() {
+            if (currentWidgetId) {
+                window.ChatWidget.destroy(currentWidgetId);
+                currentWidgetId = null;
+                resetButtons();
+                showStatus('Widget destroyed.', 'info');
+            }
+        });
+        
+        function resetButtons() {
+            initWidgetBtn.disabled = false;
+            openWidgetBtn.disabled = true;
+            closeWidgetBtn.disabled = true;
+            destroyWidgetBtn.disabled = true;
+        }
+        
+        function showStatus(message, type) {
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+            
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Wait for widget script to load
+        function waitForChatWidget(callback, maxAttempts = 50) {
+            let attempts = 0;
+            const checkInterval = setInterval(() => {
+                attempts++;
+                if (typeof window.ChatWidget !== 'undefined' && window.ChatWidget.init) {
+                    clearInterval(checkInterval);
+                    callback();
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    console.error('ChatWidget failed to load after', maxAttempts * 100, 'ms');
+                    showStatus('ChatWidget failed to load. Please refresh the page.', 'error');
+                }
+            }, 100);
+        }
+
+        // Auto-initialize widget when video is selected
+        videoSelect.addEventListener('change', function() {
+            if (this.value && !currentWidgetId) {
+                waitForChatWidget(() => {
+                    initWidget();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
